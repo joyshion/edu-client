@@ -10,7 +10,10 @@
     "student_watch": "webpack --env.build_type=student --env.target=electron-renderer --mode=development --watch --progress --config webpack.render.js",
     "teacher": "webpack --env.build_type=teacher --env.target=electron-renderer --mode=production --config webpack.render.js",
     "teacher_dev": "webpack-dev-server --env.build_type=teacher --env.target=web --mode=development --config webpack.render.js --open",
-    "teacher_watch": "webpack --env.build_type=teacher --env.target=electron-renderer --mode=development --watch --progress --config webpack.render.js"
+    "teacher_watch": "webpack --env.build_type=teacher --env.target=electron-renderer --mode=development --watch --progress --config webpack.render.js",
+    "student_app": "webpack --env.build_type=student --mode=development --config webpack.main.js",
+    "teacher_app": "webpack --env.build_type=teacher --mode=development --config webpack.main.js",
+    "app_start": "cd ./dist && electron ."
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -20,7 +23,8 @@
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-router-dom": "^4.3.1",
-    "socket.io-client": "^2.1.1"
+    "socket.io-client": "^2.1.1",
+    "webrtc-adapter": "^6.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

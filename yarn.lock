@@ -4375,6 +4375,12 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
+rtcpeerconnection-shim@^1.2.10:
+  version "1.2.13"
+  resolved "https://registry.yarnpkg.com/rtcpeerconnection-shim/-/rtcpeerconnection-shim-1.2.13.tgz#326e316b06e8b96b40f7558c8f582b86dd2c1b46"
+  dependencies:
+    sdp "^2.6.0"
+
 run-async@^2.2.0:
   version "2.3.0"
   resolved "http://registry.npm.taobao.org/run-async/download/run-async-2.3.0.tgz#0371ab4ae0bdd720d4166d7dfda64ff7a445a6c0"
@@ -4447,6 +4453,10 @@ scss-tokenizer@^0.2.3:
   dependencies:
     js-base64 "^2.1.8"
     source-map "^0.4.2"
+
+sdp@^2.6.0, sdp@^2.7.0:
+  version "2.7.4"
+  resolved "https://registry.yarnpkg.com/sdp/-/sdp-2.7.4.tgz#cac76b0e2f16f55243d25bc0432f6bbb5488bfc1"
 
 select-hose@^2.0.0:
   version "2.0.0"
@@ -5342,6 +5352,13 @@ webpack@^4.16.2:
     uglifyjs-webpack-plugin "^1.2.4"
     watchpack "^1.5.0"
     webpack-sources "^1.0.1"
+
+webrtc-adapter@^6.3.0:
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-6.3.0.tgz#21083775b30320b8f73f37d92396896bdfc18ad8"
+  dependencies:
+    rtcpeerconnection-shim "^1.2.10"
+    sdp "^2.7.0"
 
 websocket-driver@>=0.5.1:
   version "0.7.0"

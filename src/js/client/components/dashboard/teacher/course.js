@@ -1,5 +1,5 @@
 import React from 'react'
-import API from 'Common/libs/api'
+import API from 'Lib/api'
 
 export default class Course extends React.Component {
     constructor(props) {

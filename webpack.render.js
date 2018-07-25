@@ -18,6 +18,9 @@ module.exports = env => {
             alias: {
                 Src: path.resolve(__dirname, 'src/js/'),
                 Scss: path.resolve(__dirname, 'src/scss/'),
+                Lib: path.resolve(__dirname, 'src/js/client/lib'),
+                Components: path.resolve(__dirname, 'src/js/client/components'),
+                DashBoard: path.resolve(__dirname, 'src/js/client/components/dashboard/' + env.build_type),
             }
         },
         module: {

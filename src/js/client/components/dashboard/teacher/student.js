@@ -1,5 +1,4 @@
 import React from 'react'
-import Layer from 'Common/components/layer'
 import {ipcRenderer} from 'electron'
 
 export default class Student extends React.Component {

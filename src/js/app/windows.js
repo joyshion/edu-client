@@ -9,13 +9,14 @@ let { BrowserWindow } = electron;
 export default class Windows {
     constructor(app) {
         this.app = app;
+        this.config = config;
         // 所有窗口
         this.windows = [],
         // 默认窗口配置
         this.default_options = {
+            icon: this.app.app.getAppPath() + '/images/' + process.env.BUILD_TYPE + '.ico',
             titleBarStyle: 'hidden',
-            frame: false,
-            title: config.name + '_' + process.env.NODE_TARGET == 'student' ? '学生端' : '教师端',
+            title: config.name + '_' + process.env.BUILD_TYPE == 'student' ? '学生端' : '教师端',
         };
     }
 
@@ -24,7 +25,7 @@ export default class Windows {
      * @param {string} name
      */
     open(name) {
-        let config =  config.windows[name];
+        let config = this.config.windows[name];
         if (!config) {
             // 目标窗口未配置
             return;
@@ -34,12 +35,14 @@ export default class Windows {
         let options = Object.assign(this.default_options, config.options);
         let win = new BrowserWindow(options);
         // 开发模式下打开开发工具
-        if (process.env.NODE_ENV == 'dev') {
+        if (process.env.NODE_ENV == 'development') {
             win.webContents.openDevTools({
                 mode: 'detach'
             });
         }
-        win.loadURL(this.url);
+        let url = this.config.schemes + '://' + this.config.base_url + '/' + config.url;
+        console.log(url);
+        win.loadURL(url);
         this.windows.push({name: name, window: win});
 
         // 窗口将要显示
@@ -73,6 +76,15 @@ export default class Windows {
         });
 
         return win;
+    }
+
+    close(name) {
+        let index = this.windows.findIndex(n => {
+            return n.name == name;
+        });
+        if (index >= 0) {
+            this.windows[index].window.close();
+        }
     }
 
     /**

@@ -6,7 +6,6 @@ import History from './history'
 import Setting from './setting'
 import Profile from './profile'
 import {ipcRenderer} from 'electron'
-import Notification from 'Common/components/notification'
 import API from 'Common/libs/api'
 
 export default class Dashboard extends React.Component {

@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom'
 import Home from './home'
 import Student from './student'
 import Course from './course'
-import Setting from './setting'
+import Setting from '../setting'
 import Profile from './profile'
 import {ipcRenderer} from 'electron'
 

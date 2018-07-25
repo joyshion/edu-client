@@ -1,16 +1,15 @@
 let config = {
     name: '辅导+',
-    url: 'edu',
+    schemes: 'edu',
     base_url: 'app.local',
     windows: {
         login: {
             url: 'login.html',
             options: {
                 width: 300,
-                height: 500,
+                height: 450,
                 maximizable: false,
-                titleBarStyle: 'hidden',
-                frame: false
+                titleBarStyle: 'hidden'
             }
         },
         dashboard: {
@@ -18,8 +17,7 @@ let config = {
             options: {
                 width: 900,
                 height: 600,
-                titleBarStyle: 'hidden',
-                frame: false
+                titleBarStyle: 'hidden'
             }
         },
         classroom: {

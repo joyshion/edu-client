@@ -1,6 +1,6 @@
 import React from 'react'
-import Layer from 'Common/components/layer'
-import API from 'Common/libs/api'
+import Message from 'Components/message'
+import API from 'Lib/api'
 
 export default class Profile extends React.Component {
     constructor(props) {
@@ -62,24 +62,39 @@ export default class Profile extends React.Component {
     }
     onClick() {
         if (this.username.value == '') {
-            Layer.info('用户名不能为空');
+            Message.error({
+                content: '用户名不能为空',
+                duration: 3000
+            });
             return;
         }
         if (this.mobile.value == '') {
-            Layer.info('手机号码不能为空');
+            Message.error({
+                content: '手机号码不能为空',
+                duration: 3000
+            });
             return;
         }
         if (/^[1][3,4,5,7,8][0-9]{9}$/.test(this.mobile.value) == false) {
-            Layer.info('手机号码格式不正确');
+            Message.error({
+                content: '手机号码格式不正确',
+                duration: 3000
+            });
             return;
         }
         if (this.password.value != '') {
             if (this.repassword.value == '') {
-                Layer.info('请再输入一次确认密码');
+                Message.error({
+                    content: '请再输入一次确认密码',
+                    duration: 3000
+                });
                 return;
             }
             if (this.repassword.value != this.password.value) {
-                Layer.info('两次密码输入不一致');
+                Message.error({
+                    content: '两次密码输入不一致',
+                    duration: 3000
+                });
                 return;
             }
         }
@@ -89,14 +104,23 @@ export default class Profile extends React.Component {
             password: this.password.value
         };
 
-        this.api.post('/teacher/profile', data).then(data => {
+        this.api.post('/profile', data).then(data => {
             if (data.status) {
-                Layer.info('账号设置修改成功');
+                Message.success({
+                    content: '账号设置修改成功',
+                    duration: 3000
+                });
             } else {
-                Layer.info('网络通讯错误');
+                Message.error({
+                    content: '网络通讯错误',
+                    duration: 3000
+                });
             }
         }).catch(error => {
-            Layer.info('网络通讯错误');
+            Message.error({
+                content: '网络通讯错误',
+                duration: 3000
+            });
         });
     }
 }

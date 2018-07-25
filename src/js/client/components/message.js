@@ -50,27 +50,7 @@ class Message extends React.Component {
 // 正在显示的message
 let messages = [];
 
-Message.info = options => {
-    let div = document.createElement('div');
-    // 如果有指定节点，则插入该节点下，否则插入到body节点下
-    if (options.container) {
-        options.container.appendChild(div);
-    } else {
-        document.body.appendChild(div);
-    }
-    let closeHandle = () => {
-        ReactDOM.unmountComponentAtNode(div);
-        div.parentNode.removeChild(div);
-    };
-    ReactDOM.render(
-        <Message type="info" enter="sidein" leave="sideout" duration={options.duration} closeHandle={closeHandle}>
-            <i className="material-icons">check_circle</i>
-            <span>{options.content}</span>
-        </Message>
-    , div);
-}
-
-Message.warning = options => {
+Message.show = (type, options) => {
     Message.closeAll();
     let div = document.createElement('div');
     // 如果有指定节点，则插入该节点下，否则插入到body节点下
@@ -89,14 +69,43 @@ Message.warning = options => {
         ReactDOM.unmountComponentAtNode(div);
         div.parentNode.removeChild(div);
     };
+    let icon;
+    switch(type) {
+        case 'success':
+            icon = 'check_circle';
+            break;
+        case 'info':
+            icon = 'info';
+            break;
+        case 'warning':
+            icon = 'warning';
+            break;
+        case 'error':
+            icon = 'error';
+            break;
+    }
     ReactDOM.render(
-        <Message type="warning" enter="sidein" leave="sideout" duration={options.duration} closeHandle={closeHandle}>
-            <i className="material-icons">error</i>
+        <Message type={type} enter="sidein" leave="sideout" duration={options.duration} closeHandle={closeHandle}>
+            <i className="material-icons">{icon}</i>
             <span>{options.content}</span>
         </Message>
     , div);
-    // 已显示的message
-    messages.push(div);
+}
+
+Message.success = options => {
+    Message.show('success', options);
+}
+
+Message.info = options => {
+    Message.show('info', options);
+}
+
+Message.warning = options => {
+    Message.show('warning', options);
+}
+
+Message.error = options => {
+    Message.show('error', options);
 }
 
 Message.close = message => {

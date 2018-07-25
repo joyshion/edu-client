@@ -1,6 +1,6 @@
 import React from 'react'
 import 'webrtc-adapter'
-import Layer from 'Common/components/layer'
+import Message from 'Components/message'
 
 export default class Setting extends React.Component {
     constructor(props) {
@@ -105,6 +105,9 @@ export default class Setting extends React.Component {
         if (videoInput) {
             localStorage.setItem('videoInput', videoInput.value);
         }
-        Layer.info('系统设置保存成功');
+        Message.success({
+            content: '系统设置保存成功',
+            duration: 3000
+        });
     }
 }

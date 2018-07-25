@@ -1,7 +1,7 @@
 import React from 'react'
-import Message from './message';
-import API from '../lib/api'
-//import {ipcRenderer} from 'electron'
+import Message from 'Components/message';
+import API from 'Lib/api'
+import {ipcRenderer} from 'electron'
 
 export default class Login extends React.Component {
     constructor(props) {
@@ -16,6 +16,7 @@ export default class Login extends React.Component {
     }
     render() {
         let type = process.env.BUILD_TYPE == 'teacher' ? '教师端' : '学生端';
+        let label = this.state.loading ? '正在登陆' : '登陆';
         return (
             <div className="container-fluid login">
                 <div className="text-center logo">
@@ -31,7 +32,7 @@ export default class Login extends React.Component {
                         <label>密码</label>
                         <input ref={(password) => {this.password = password}} type="password" className="form-control" placeholder="登录密码"/>
                     </div>
-                    <button type="button" className="btn btn-primary btn-block" disabled={this.state.disabled} onClick={this.doLogin.bind(this)}>登录</button>
+                    <button type="button" className="btn btn-primary btn-block" disabled={this.state.disabled} onClick={this.doLogin.bind(this)}>{label}</button>
                 </form>
             </div>
         )
@@ -65,7 +66,7 @@ export default class Login extends React.Component {
                 localStorage.setItem('uid', data.uid);
                 this.getData();
             } else {
-                Message.warning({
+                Message.error({
                     content: data.error,
                     duration: 3000
                 });
@@ -76,8 +77,12 @@ export default class Login extends React.Component {
         }).catch(error => {
             console.log(error);
             this.state.loading = false;
+            this.state.disabled = false;
             this.setState(this.state);
-            //Layer.info('与服务器通讯失败');
+            Message.warning({
+                content: '网络通讯错误',
+                duration: 3000
+            });
         });
     }
 
@@ -86,11 +91,16 @@ export default class Login extends React.Component {
             this.state.loading = false;
             this.setState(this.state);
             localStorage.setItem('data', JSON.stringify(data));
-            //ipcRenderer.send('login');
+            ipcRenderer.send('login');
         }).catch(error => {
+            console.log(error);
             this.state.loading = false;
+            this.state.disabled = false;
             this.setState(this.state);
-            Layer.info('与服务器通讯失败');
+            Message.warning({
+                content: '网络通讯错误',
+                duration: 3000
+            });
         });
     }
 }

@@ -24,7 +24,7 @@ export default class App {
             // 清空菜单
             Menu.setApplicationMenu(null);
             // 开发模式启用刷新热键
-            if (process.env.NODE_ENV == 'dev') {
+            if (process.env.NODE_ENV == 'development') {
                 switch (process.platform) {
                     // macOS 刷新热键
                     case 'darwin':
@@ -88,8 +88,9 @@ export default class App {
 
     // 注册自定义协议的处理器
     registerStreamProtocol() {
-        this.protocol.registerStreamProtocol(this.schemes, (request, callback) => {
+        this.protocol.registerStreamProtocol(config.schemes, (request, callback) => {
             let filepath = this.getRequestFilePath(request);
+            console.log(filepath);
             let data = fs.createReadStream(filepath);
             let mime = this.getMimeType(filepath);
             callback({
