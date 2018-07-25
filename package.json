@@ -1,0 +1,41 @@
+{
+  "name": "edu-client",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Shion<shion.chow@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "student": "webpack --env.build_type=student --env.target=electron-renderer --mode=production --config webpack.render.js",
+    "student_dev": "webpack-dev-server --env.build_type=teacher --env.target=web --mode=development --config webpack.render.js --open",
+    "student_watch": "webpack --env.build_type=student --env.target=electron-renderer --mode=development --watch --progress --config webpack.render.js",
+    "teacher": "webpack --env.build_type=teacher --env.target=electron-renderer --mode=production --config webpack.render.js",
+    "teacher_dev": "webpack-dev-server --env.build_type=teacher --env.target=web --mode=development --config webpack.render.js --open",
+    "teacher_watch": "webpack --env.build_type=teacher --env.target=electron-renderer --mode=development --watch --progress --config webpack.render.js"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bootstrap": "^4.1.3",
+    "font-awesome": "^4.7.0",
+    "mime": "^2.3.1",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-router-dom": "^4.3.1",
+    "socket.io-client": "^2.1.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^1.0.0",
+    "electron": "^2.0.5",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "file-loader": "^1.1.11",
+    "node-sass": "^4.9.2",
+    "sass-loader": "^7.0.3",
+    "style-loader": "^0.21.0",
+    "webpack": "^4.16.2",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5"
+  }
+}

@@ -1,0 +1,32 @@
+@keyframes fadein {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+@keyframes fadeout {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+@keyframes sidein {
+    0% { top: 0; opacity: 0;}
+    100% { top: 20px; opacity: 1;}
+}
+@keyframes sideout {
+    0% { top: 20px; opacity: 1;}
+    100% { top: 0px; opacity: 0;}
+}
+.fadein {
+    animation-name: fadein;
+    animation-duration: .5s;
+}
+.fadeout {
+    animation-name: fadeout;
+    animation-duration: .5s;
+}
+.sidein {
+    animation-name: sidein;
+    animation-duration: .1s;
+}
+.sideout {
+    animation-name: sideout;
+    animation-duration: .5s;
+}
