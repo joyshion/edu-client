@@ -91,13 +91,28 @@ export default class Classroom extends React.Component {
                 case 'create_room_error':
                     message = <div>创建教室失败!<br/><br/>错误信息：{error.message}</div>;
                     break;
+                case 'media_error':
+                    switch (error.name) {
+                        case 'NotReadableError':
+                            message = <div>打开音视频设备失败!<br/><br/>原因：设备被占用<br/><br/>解决办法：请关闭正在使用音视频设备的程序后再试</div>;
+                            break;
+                        case 'NotFoundError':
+                            message = <div>打开音视频设备失败!<br/><br/>原因：未发现音视频设备<br/><br/>解决办法：请确认您已正确连接音视频设备</div>;
+                            break;
+                        case 'NotAllowedError':
+                            message = <div>打开音视频设备失败!<br/><br/>原因：访问被禁止<br/><br/>解决办法：请允许本程序访问您的音视频设备</div>;
+                            break;
+                    }
+                    break;
             }
             this.state.status = '发生错误';
             this.setState(this.state);
-            Dialog.show({
-                title: '提示',
-                content: message,
-            });
+            if (message) {
+                Dialog.show({
+                    title: '提示',
+                    content: message,
+                });
+            }
         };
     }
 

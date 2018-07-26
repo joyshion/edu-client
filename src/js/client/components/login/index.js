@@ -40,6 +40,13 @@ export default class Login extends React.Component {
     componentDidMount() {
         this.username.oninput = () => this.checkInput();
         this.password.oninput = () => this.checkInput();
+        this.password.addEventListener('keyup', this.keyHandle.bind(this), false);
+    }
+    // 回车按键发送消息
+    keyHandle(e) {
+        if (e.keyCode == 13) {
+            this.doLogin();
+        }
     }
     checkInput() {
         let disabled = true;
