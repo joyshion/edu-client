@@ -27,7 +27,8 @@ let config = {
                 frame: false
             },
             onShow: (win) => {
-                win.maximizable();
+                console.log('on show');
+                win.maximize();
             },
             onClose: (win, event) => {
                 

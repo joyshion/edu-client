@@ -1,21 +1,17 @@
 import React from 'react'
-import Message from 'Components/message'
+import Message from 'Components/common/message'
 import API from 'Lib/api'
 
 export default class Profile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: null
+            name: '',
+            mobile: '',
         };
         this.api = new API();
     }
     render() {
-        let name, mobile;
-        if (this.state.data) {
-            name = this.state.data.profile.name;
-            mobile = this.state.data.profile.mobile;
-        }
         return (
             <div className="right d-flex flex-column">
                 <div className="content">
@@ -24,25 +20,25 @@ export default class Profile extends React.Component {
                         <div className="form-group row">
                             <label className="col-md-2 col-form-label text-right">用户名</label>
                             <div className="col-md-4">
-                                <input ref={username => {this.username = username}} type="text" class="form-control" placeholder="用户名" value={name}/>
+                                <input ref={username => {this.username = username}} type="text" className="form-control" placeholder="用户名" value={this.state.name} onChange={this.onChangeHandle.bind(this, 'name')}/>
                             </div>
                         </div>
                         <div className="form-group row">
                             <label className="col-md-2 col-form-label text-right">手机号码</label>
                             <div className="col-md-6">
-                                <input ref={mobile => {this.mobile = mobile}} type="text" class="form-control" placeholder="手机号码" value={mobile}/>
+                                <input ref={mobile => {this.mobile = mobile}} type="text" className="form-control" placeholder="手机号码" value={this.state.mobile} onChange={this.onChangeHandle.bind(this, 'mobile')}/>
                             </div>
                         </div>
                         <div className="form-group row">
                             <label className="col-md-2 col-form-label text-right">新密码</label>
                             <div className="col-md-6">
-                                <input ref={password => {this.password = password}} type="password" class="form-control" placeholder="不修改请留空"/>
+                                <input ref={password => {this.password = password}} type="password" className="form-control" placeholder="不修改请留空"/>
                             </div>
                         </div>
                         <div className="form-group row">
                             <label className="col-md-2 col-form-label text-right">确认新密码</label>
                             <div className="col-md-6">
-                                <input ref={repassword => {this.repassword = repassword}} type="password" class="form-control" placeholder="不修改请留空"/>
+                                <input ref={repassword => {this.repassword = repassword}} type="password" className="form-control" placeholder="不修改请留空"/>
                             </div>
                         </div>
                         <div className="form-group row">
@@ -56,8 +52,13 @@ export default class Profile extends React.Component {
         )
     }
     componentDidMount() {
-        let data= localStorage.getItem('data');
-        this.state.data = JSON.parse(data);
+        let data= JSON.parse(localStorage.getItem('data'));
+        this.state.name = data.profile.name;
+        this.state.mobile = data.profile.mobile;
+        this.setState(this.state);
+    }
+    onChangeHandle(type, event) {
+        this.state[type] = event.target.value;
         this.setState(this.state);
     }
     onClick() {
@@ -111,13 +112,13 @@ export default class Profile extends React.Component {
                     duration: 3000
                 });
             } else {
-                Message.error({
+                Message.warning({
                     content: '网络通讯错误',
                     duration: 3000
                 });
             }
         }).catch(error => {
-            Message.error({
+            Message.warning({
                 content: '网络通讯错误',
                 duration: 3000
             });

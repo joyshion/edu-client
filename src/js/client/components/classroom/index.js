@@ -3,8 +3,8 @@ import WhiteBoard from './whiteboard'
 import Video from './video'
 import Chat from './chat'
 import Statusbar from './status'
-import Modal from 'Common/components/modal'
-import RTC from 'Common/libs/rtc'
+import Dialog from 'Components/common/dialog'
+import RTC from 'Lib/rtc'
 import querystring from 'querystring'
 
 export default class Classroom extends React.Component {
@@ -43,7 +43,7 @@ export default class Classroom extends React.Component {
     initRoom(options) {
         let params = querystring.stringify(options);
         this.rtc = new RTC({
-            url: 'http://edu.com:10800?' + params,
+            url: 'http://edu.xuancai365.com:10800?' + params,
             video: {
                 local: document.getElementById('local'),
                 remote: document.getElementById('remote')
@@ -94,7 +94,7 @@ export default class Classroom extends React.Component {
             }
             this.state.status = '发生错误';
             this.setState(this.state);
-            Modal.confirm({
+            Dialog.show({
                 title: '提示',
                 content: message,
             });

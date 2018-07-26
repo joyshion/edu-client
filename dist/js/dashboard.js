@@ -32659,6 +32659,201 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./src/js/client/components/common/message.js":
+/*!****************************************************!*\
+  !*** ./src/js/client/components/common/message.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Message = function (_React$Component) {
+    _inherits(Message, _React$Component);
+
+    function Message(props) {
+        _classCallCheck(this, Message);
+
+        var _this = _possibleConstructorReturn(this, (Message.__proto__ || Object.getPrototypeOf(Message)).call(this, props));
+
+        _this.state = {
+            class: 'message ' + _this.props.enter
+        };
+        _this.count = 0;
+        return _this;
+    }
+
+    _createClass(Message, [{
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            return _react2.default.createElement(
+                'div',
+                { ref: function ref(div) {
+                        return _this2.div = div;
+                    },
+                    className: this.state.class,
+                    onAnimationEnd: this.onAnimationEnd.bind(this) },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'message_content message_' + this.props.type },
+                    this.props.children
+                )
+            );
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.state.count = document.querySelectorAll('.message').length;
+            this.setState(this.state);
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            if (this.timeout) {
+                clearTimeout(this.timeout);
+            }
+        }
+    }, {
+        key: 'onAnimationEnd',
+        value: function onAnimationEnd(e) {
+            var _this3 = this;
+
+            // 如果是进场动画结束
+            if (this.div.classList.contains(this.props.enter)) {
+                // 如果指定了持续时间，倒计时后执行出场动画
+                if (this.props.duration > 0) {
+                    this.timeout = setTimeout(function () {
+                        _this3.state.class = 'message ' + _this3.props.leave;
+                        _this3.setState(_this3.state);
+                    }, this.props.duration);
+                }
+            }
+            // 如果是出场动画结束
+            if (this.div.classList.contains(this.props.leave)) {
+                this.props.closeHandle();
+            }
+        }
+    }]);
+
+    return Message;
+}(_react2.default.Component);
+
+// 正在显示的message
+
+
+var messages = [];
+
+Message.show = function (type, options) {
+    Message.closeAll();
+    var div = document.createElement('div');
+    // 如果有指定节点，则插入该节点下，否则插入到body节点下
+    if (options.container) {
+        options.container.appendChild(div);
+    } else {
+        document.body.appendChild(div);
+    }
+    var closeHandle = function closeHandle() {
+        var index = messages.findIndex(function (n) {
+            return n == div;
+        });
+        if (index > -1) {
+            messages.splice(index, 1);
+        }
+        _reactDom2.default.unmountComponentAtNode(div);
+        div.parentNode.removeChild(div);
+    };
+    var icon = void 0;
+    switch (type) {
+        case 'success':
+            icon = 'check_circle';
+            break;
+        case 'info':
+            icon = 'info';
+            break;
+        case 'warning':
+            icon = 'warning';
+            break;
+        case 'error':
+            icon = 'error';
+            break;
+    }
+    _reactDom2.default.render(_react2.default.createElement(
+        Message,
+        { type: type, enter: 'sidein', leave: 'sideout', duration: options.duration, closeHandle: closeHandle },
+        _react2.default.createElement(
+            'i',
+            { className: 'material-icons' },
+            icon
+        ),
+        _react2.default.createElement(
+            'span',
+            null,
+            options.content
+        )
+    ), div);
+};
+
+Message.success = function (options) {
+    Message.show('success', options);
+};
+
+Message.info = function (options) {
+    Message.show('info', options);
+};
+
+Message.warning = function (options) {
+    Message.show('warning', options);
+};
+
+Message.error = function (options) {
+    Message.show('error', options);
+};
+
+Message.close = function (message) {
+    try {
+        _reactDom2.default.unmountComponentAtNode(message);
+        message.parentNode.removeChild(message);
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+Message.closeAll = function () {
+    messages.map(function (n, i) {
+        messages.splice(i, 1);
+        Message.close(n);
+    });
+};
+
+exports.default = Message;
+
+/***/ }),
+
 /***/ "./src/js/client/components/dashboard/setting.js":
 /*!*******************************************************!*\
   !*** ./src/js/client/components/dashboard/setting.js ***!
@@ -32681,7 +32876,7 @@ var _react2 = _interopRequireDefault(_react);
 
 __webpack_require__(/*! webrtc-adapter */ "./node_modules/webrtc-adapter/src/js/adapter_core.js");
 
-var _message = __webpack_require__(/*! Components/message */ "./src/js/client/components/message.js");
+var _message = __webpack_require__(/*! Components/common/message */ "./src/js/client/components/common/message.js");
 
 var _message2 = _interopRequireDefault(_message);
 
@@ -32893,6 +33088,144 @@ exports.default = Setting;
 
 /***/ }),
 
+/***/ "./src/js/client/components/dashboard/teacher/classroom.js":
+/*!*****************************************************************!*\
+  !*** ./src/js/client/components/dashboard/teacher/classroom.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _api = __webpack_require__(/*! Lib/api */ "./src/js/client/lib/api.js");
+
+var _api2 = _interopRequireDefault(_api);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ClassRoom = function (_React$Component) {
+    _inherits(ClassRoom, _React$Component);
+
+    function ClassRoom(props) {
+        _classCallCheck(this, ClassRoom);
+
+        var _this = _possibleConstructorReturn(this, (ClassRoom.__proto__ || Object.getPrototypeOf(ClassRoom)).call(this, props));
+
+        _this.state = {
+            data: null
+        };
+        _this.api = new _api2.default();
+        return _this;
+    }
+
+    _createClass(ClassRoom, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: 'right d-flex flex-column' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'content' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'title' },
+                        '\u6211\u7684\u8BFE\u5802'
+                    ),
+                    _react2.default.createElement(
+                        'table',
+                        { className: 'table table-hover' },
+                        _react2.default.createElement(
+                            'thead',
+                            null,
+                            _react2.default.createElement(
+                                'tr',
+                                null,
+                                _react2.default.createElement(
+                                    'th',
+                                    { scope: 'col' },
+                                    '\u8BFE\u7A0B\u540D\u79F0'
+                                ),
+                                _react2.default.createElement(
+                                    'th',
+                                    { scope: 'col' },
+                                    '\u4E0A\u8BFE\u5B66\u751F'
+                                ),
+                                _react2.default.createElement(
+                                    'th',
+                                    { scope: 'col' },
+                                    '\u5F00\u59CB\u65F6\u95F4'
+                                ),
+                                _react2.default.createElement(
+                                    'th',
+                                    { scope: 'col' },
+                                    '\u7ED3\u675F\u65F6\u95F4'
+                                ),
+                                _react2.default.createElement(
+                                    'th',
+                                    { scope: 'col' },
+                                    '\u72B6\u6001'
+                                ),
+                                _react2.default.createElement(
+                                    'th',
+                                    { scope: 'col' },
+                                    '\u64CD\u4F5C'
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'tbody',
+                            null,
+                            this.state.data ? this.state.data.history.map(function (n, i) {
+                                return _react2.default.createElement('tr', { key: i });
+                            }) : _react2.default.createElement(
+                                'tr',
+                                null,
+                                _react2.default.createElement(
+                                    'td',
+                                    { colSpan: '6' },
+                                    '\u6682\u65E0\u8BFE\u5802'
+                                )
+                            ),
+                            _react2.default.createElement('tr', null)
+                        )
+                    )
+                )
+            );
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var data = localStorage.getItem('data');
+            this.state.data = JSON.parse(data);
+            this.setState(this.state);
+        }
+    }]);
+
+    return ClassRoom;
+}(_react2.default.Component);
+
+exports.default = ClassRoom;
+
+/***/ }),
+
 /***/ "./src/js/client/components/dashboard/teacher/course.js":
 /*!**************************************************************!*\
   !*** ./src/js/client/components/dashboard/teacher/course.js ***!
@@ -32956,7 +33289,7 @@ var Course = function (_React$Component) {
                     ),
                     _react2.default.createElement(
                         'table',
-                        { 'class': 'table table-hover' },
+                        { className: 'table table-hover' },
                         _react2.default.createElement(
                             'thead',
                             null,
@@ -32993,10 +33326,10 @@ var Course = function (_React$Component) {
                         _react2.default.createElement(
                             'tbody',
                             null,
-                            this.state.data ? this.state.data.course.map(function (n) {
+                            this.state.data ? this.state.data.course.map(function (n, i) {
                                 return _react2.default.createElement(
                                     'tr',
-                                    null,
+                                    { key: i },
                                     _react2.default.createElement(
                                         'td',
                                         null,
@@ -33217,6 +33550,10 @@ var _profile = __webpack_require__(/*! ./profile */ "./src/js/client/components/
 
 var _profile2 = _interopRequireDefault(_profile);
 
+var _classroom = __webpack_require__(/*! ./classroom */ "./src/js/client/components/dashboard/teacher/classroom.js");
+
+var _classroom2 = _interopRequireDefault(_classroom);
+
 var _electron = __webpack_require__(/*! electron */ "electron");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -33242,9 +33579,19 @@ var Dashboard = function (_React$Component) {
     }
 
     _createClass(Dashboard, [{
+        key: 'getPhoto',
+        value: function getPhoto() {
+            var photo = null;
+            if (this.state.data && this.state.data.profile.photo != '') {
+                return 'https://edu.xuancai365.com/' + this.state.data.profile.photo;
+            } else {
+                return 'images/face.jpg';
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var photo = this.state.data ? 'http://edu.com/' + this.state.data.profile.photo : '';
+            var photo = this.getPhoto();
             var name = this.state.data ? this.state.data.profile.name : '';
 
             return _react2.default.createElement(
@@ -33304,6 +33651,15 @@ var Dashboard = function (_React$Component) {
                                     null,
                                     _react2.default.createElement(
                                         _reactRouterDom.NavLink,
+                                        { to: '/classroom', activeClassName: 'active' },
+                                        '\u6211\u7684\u8BFE\u5802'
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    'li',
+                                    null,
+                                    _react2.default.createElement(
+                                        _reactRouterDom.NavLink,
                                         { to: '/profile', activeClassName: 'active' },
                                         '\u8D26\u53F7\u8BBE\u7F6E'
                                     )
@@ -33333,7 +33689,8 @@ var Dashboard = function (_React$Component) {
                     _react2.default.createElement(_reactRouterDom.Route, { path: '/student', component: _student2.default }),
                     _react2.default.createElement(_reactRouterDom.Route, { path: '/course', component: _course2.default }),
                     _react2.default.createElement(_reactRouterDom.Route, { path: '/profile', component: _profile2.default }),
-                    _react2.default.createElement(_reactRouterDom.Route, { path: '/setting', component: _setting2.default })
+                    _react2.default.createElement(_reactRouterDom.Route, { path: '/setting', component: _setting2.default }),
+                    _react2.default.createElement(_reactRouterDom.Route, { path: '/classroom', component: _classroom2.default })
                 )
             );
         }
@@ -33380,7 +33737,7 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _message = __webpack_require__(/*! Components/message */ "./src/js/client/components/message.js");
+var _message = __webpack_require__(/*! Components/common/message */ "./src/js/client/components/common/message.js");
 
 var _message2 = _interopRequireDefault(_message);
 
@@ -33405,7 +33762,8 @@ var Profile = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Profile.__proto__ || Object.getPrototypeOf(Profile)).call(this, props));
 
         _this.state = {
-            data: null
+            name: '',
+            mobile: ''
         };
         _this.api = new _api2.default();
         return _this;
@@ -33416,12 +33774,6 @@ var Profile = function (_React$Component) {
         value: function render() {
             var _this2 = this;
 
-            var name = void 0,
-                mobile = void 0;
-            if (this.state.data) {
-                name = this.state.data.profile.name;
-                mobile = this.state.data.profile.mobile;
-            }
             return _react2.default.createElement(
                 'div',
                 { className: 'right d-flex flex-column' },
@@ -33449,7 +33801,7 @@ var Profile = function (_React$Component) {
                                 { className: 'col-md-4' },
                                 _react2.default.createElement('input', { ref: function ref(username) {
                                         _this2.username = username;
-                                    }, type: 'text', 'class': 'form-control', placeholder: '\u7528\u6237\u540D', value: name })
+                                    }, type: 'text', className: 'form-control', placeholder: '\u7528\u6237\u540D', value: this.state.name, onChange: this.onChangeHandle.bind(this, 'name') })
                             )
                         ),
                         _react2.default.createElement(
@@ -33465,7 +33817,7 @@ var Profile = function (_React$Component) {
                                 { className: 'col-md-6' },
                                 _react2.default.createElement('input', { ref: function ref(mobile) {
                                         _this2.mobile = mobile;
-                                    }, type: 'text', 'class': 'form-control', placeholder: '\u624B\u673A\u53F7\u7801', value: mobile })
+                                    }, type: 'text', className: 'form-control', placeholder: '\u624B\u673A\u53F7\u7801', value: this.state.mobile, onChange: this.onChangeHandle.bind(this, 'mobile') })
                             )
                         ),
                         _react2.default.createElement(
@@ -33481,7 +33833,7 @@ var Profile = function (_React$Component) {
                                 { className: 'col-md-6' },
                                 _react2.default.createElement('input', { ref: function ref(password) {
                                         _this2.password = password;
-                                    }, type: 'password', 'class': 'form-control', placeholder: '\u4E0D\u4FEE\u6539\u8BF7\u7559\u7A7A' })
+                                    }, type: 'password', className: 'form-control', placeholder: '\u4E0D\u4FEE\u6539\u8BF7\u7559\u7A7A' })
                             )
                         ),
                         _react2.default.createElement(
@@ -33497,7 +33849,7 @@ var Profile = function (_React$Component) {
                                 { className: 'col-md-6' },
                                 _react2.default.createElement('input', { ref: function ref(repassword) {
                                         _this2.repassword = repassword;
-                                    }, type: 'password', 'class': 'form-control', placeholder: '\u4E0D\u4FEE\u6539\u8BF7\u7559\u7A7A' })
+                                    }, type: 'password', className: 'form-control', placeholder: '\u4E0D\u4FEE\u6539\u8BF7\u7559\u7A7A' })
                             )
                         ),
                         _react2.default.createElement(
@@ -33520,8 +33872,15 @@ var Profile = function (_React$Component) {
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var data = localStorage.getItem('data');
-            this.state.data = JSON.parse(data);
+            var data = JSON.parse(localStorage.getItem('data'));
+            this.state.name = data.profile.name;
+            this.state.mobile = data.profile.mobile;
+            this.setState(this.state);
+        }
+    }, {
+        key: 'onChangeHandle',
+        value: function onChangeHandle(type, event) {
+            this.state[type] = event.target.value;
             this.setState(this.state);
         }
     }, {
@@ -33577,13 +33936,13 @@ var Profile = function (_React$Component) {
                         duration: 3000
                     });
                 } else {
-                    _message2.default.error({
+                    _message2.default.warning({
                         content: '网络通讯错误',
                         duration: 3000
                     });
                 }
             }).catch(function (error) {
-                _message2.default.error({
+                _message2.default.warning({
                     content: '网络通讯错误',
                     duration: 3000
                 });
@@ -33805,201 +34164,6 @@ var Student = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = Student;
-
-/***/ }),
-
-/***/ "./src/js/client/components/message.js":
-/*!*********************************************!*\
-  !*** ./src/js/client/components/message.js ***!
-  \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Message = function (_React$Component) {
-    _inherits(Message, _React$Component);
-
-    function Message(props) {
-        _classCallCheck(this, Message);
-
-        var _this = _possibleConstructorReturn(this, (Message.__proto__ || Object.getPrototypeOf(Message)).call(this, props));
-
-        _this.state = {
-            class: 'message ' + _this.props.enter
-        };
-        _this.count = 0;
-        return _this;
-    }
-
-    _createClass(Message, [{
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
-
-            return _react2.default.createElement(
-                'div',
-                { ref: function ref(div) {
-                        return _this2.div = div;
-                    },
-                    className: this.state.class,
-                    onAnimationEnd: this.onAnimationEnd.bind(this) },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'message_content message_' + this.props.type },
-                    this.props.children
-                )
-            );
-        }
-    }, {
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            this.state.count = document.querySelectorAll('.message').length;
-            this.setState(this.state);
-        }
-    }, {
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-            if (this.timeout) {
-                clearTimeout(this.timeout);
-            }
-        }
-    }, {
-        key: 'onAnimationEnd',
-        value: function onAnimationEnd(e) {
-            var _this3 = this;
-
-            // 如果是进场动画结束
-            if (this.div.classList.contains(this.props.enter)) {
-                // 如果指定了持续时间，倒计时后执行出场动画
-                if (this.props.duration > 0) {
-                    this.timeout = setTimeout(function () {
-                        _this3.state.class = 'message ' + _this3.props.leave;
-                        _this3.setState(_this3.state);
-                    }, this.props.duration);
-                }
-            }
-            // 如果是出场动画结束
-            if (this.div.classList.contains(this.props.leave)) {
-                this.props.closeHandle();
-            }
-        }
-    }]);
-
-    return Message;
-}(_react2.default.Component);
-
-// 正在显示的message
-
-
-var messages = [];
-
-Message.show = function (type, options) {
-    Message.closeAll();
-    var div = document.createElement('div');
-    // 如果有指定节点，则插入该节点下，否则插入到body节点下
-    if (options.container) {
-        options.container.appendChild(div);
-    } else {
-        document.body.appendChild(div);
-    }
-    var closeHandle = function closeHandle() {
-        var index = messages.findIndex(function (n) {
-            return n == div;
-        });
-        if (index > -1) {
-            messages.splice(index, 1);
-        }
-        _reactDom2.default.unmountComponentAtNode(div);
-        div.parentNode.removeChild(div);
-    };
-    var icon = void 0;
-    switch (type) {
-        case 'success':
-            icon = 'check_circle';
-            break;
-        case 'info':
-            icon = 'info';
-            break;
-        case 'warning':
-            icon = 'warning';
-            break;
-        case 'error':
-            icon = 'error';
-            break;
-    }
-    _reactDom2.default.render(_react2.default.createElement(
-        Message,
-        { type: type, enter: 'sidein', leave: 'sideout', duration: options.duration, closeHandle: closeHandle },
-        _react2.default.createElement(
-            'i',
-            { className: 'material-icons' },
-            icon
-        ),
-        _react2.default.createElement(
-            'span',
-            null,
-            options.content
-        )
-    ), div);
-};
-
-Message.success = function (options) {
-    Message.show('success', options);
-};
-
-Message.info = function (options) {
-    Message.show('info', options);
-};
-
-Message.warning = function (options) {
-    Message.show('warning', options);
-};
-
-Message.error = function (options) {
-    Message.show('error', options);
-};
-
-Message.close = function (message) {
-    try {
-        _reactDom2.default.unmountComponentAtNode(message);
-        message.parentNode.removeChild(message);
-    } catch (e) {
-        console.log(e);
-    }
-};
-
-Message.closeAll = function () {
-    messages.map(function (n, i) {
-        messages.splice(i, 1);
-        Message.close(n);
-    });
-};
-
-exports.default = Message;
 
 /***/ }),
 

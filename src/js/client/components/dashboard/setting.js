@@ -1,6 +1,6 @@
 import React from 'react'
 import 'webrtc-adapter'
-import Message from 'Components/message'
+import Message from 'Components/common/message'
 
 export default class Setting extends React.Component {
     constructor(props) {

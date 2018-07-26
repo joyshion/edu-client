@@ -23,9 +23,14 @@
         background: #fff;
         box-shadow: 0 4px 12px rgba(0,0,0,.2);
     }
-    .message_info {
+    .message_success {
         .material-icons {
             color: $color-green;
+        }
+    }
+    .message_info {
+        .material-icons {
+            color: #8FDE64;
         }
     }
     .message_warning {

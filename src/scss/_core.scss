@@ -4,7 +4,7 @@ html,body {
 body {
     -webkit-app-region: drag;
 }
-input,button {
+a,input,button {
     -webkit-app-region: no-drag;
 }
 #root {

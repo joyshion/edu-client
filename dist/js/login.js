@@ -22845,213 +22845,10 @@ if (false) {} else {
 
 /***/ }),
 
-/***/ "./src/js/client/components/login.js":
-/*!*******************************************!*\
-  !*** ./src/js/client/components/login.js ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _message = __webpack_require__(/*! Components/message */ "./src/js/client/components/message.js");
-
-var _message2 = _interopRequireDefault(_message);
-
-var _api = __webpack_require__(/*! Lib/api */ "./src/js/client/lib/api.js");
-
-var _api2 = _interopRequireDefault(_api);
-
-var _electron = __webpack_require__(/*! electron */ "electron");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Login = function (_React$Component) {
-    _inherits(Login, _React$Component);
-
-    function Login(props) {
-        _classCallCheck(this, Login);
-
-        var _this = _possibleConstructorReturn(this, (Login.__proto__ || Object.getPrototypeOf(Login)).call(this, props));
-
-        _this.state = {
-            loading: false,
-            disabled: true,
-            showLayer: false,
-            layerText: ''
-        };
-        _this.api = new _api2.default();
-        return _this;
-    }
-
-    _createClass(Login, [{
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
-
-            var type =  true ? '教师端' : undefined;
-            var label = this.state.loading ? '正在登陆' : '登陆';
-            return _react2.default.createElement(
-                'div',
-                { className: 'container-fluid login' },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'text-center logo' },
-                    _react2.default.createElement('img', { src: '/images/logo.png' })
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'text-center name' },
-                    type
-                ),
-                _react2.default.createElement(
-                    'form',
-                    null,
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'form-group' },
-                        _react2.default.createElement(
-                            'label',
-                            null,
-                            '\u8D26\u53F7'
-                        ),
-                        _react2.default.createElement('input', { ref: function ref(username) {
-                                _this2.username = username;
-                            }, type: 'text', className: 'form-control', placeholder: '\u7528\u6237\u540D/\u624B\u673A\u53F7\u7801' })
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'form-group' },
-                        _react2.default.createElement(
-                            'label',
-                            null,
-                            '\u5BC6\u7801'
-                        ),
-                        _react2.default.createElement('input', { ref: function ref(password) {
-                                _this2.password = password;
-                            }, type: 'password', className: 'form-control', placeholder: '\u767B\u5F55\u5BC6\u7801' })
-                    ),
-                    _react2.default.createElement(
-                        'button',
-                        { type: 'button', className: 'btn btn-primary btn-block', disabled: this.state.disabled, onClick: this.doLogin.bind(this) },
-                        label
-                    )
-                )
-            );
-        }
-    }, {
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var _this3 = this;
-
-            this.username.oninput = function () {
-                return _this3.checkInput();
-            };
-            this.password.oninput = function () {
-                return _this3.checkInput();
-            };
-        }
-    }, {
-        key: 'checkInput',
-        value: function checkInput() {
-            var disabled = true;
-            if (this.username.value != '' && this.password.value != '') {
-                disabled = false;
-            }
-            this.setState({
-                disabled: disabled
-            });
-        }
-    }, {
-        key: 'doLogin',
-        value: function doLogin() {
-            var _this4 = this;
-
-            this.state.loading = true;
-            this.state.disabled = true;
-            this.setState(this.state);
-
-            var data = {
-                name: this.username.value,
-                password: this.password.value
-            };
-
-            this.api.post('/login', data).then(function (data) {
-                if (data.status) {
-                    localStorage.setItem('auth_token', data.token);
-                    localStorage.setItem('uid', data.uid);
-                    _this4.getData();
-                } else {
-                    _message2.default.error({
-                        content: data.error,
-                        duration: 3000
-                    });
-                    _this4.state.loading = false;
-                    _this4.state.disabled = false;
-                    _this4.setState(_this4.state);
-                }
-            }).catch(function (error) {
-                console.log(error);
-                _this4.state.loading = false;
-                _this4.state.disabled = false;
-                _this4.setState(_this4.state);
-                _message2.default.warning({
-                    content: '网络通讯错误',
-                    duration: 3000
-                });
-            });
-        }
-    }, {
-        key: 'getData',
-        value: function getData() {
-            var _this5 = this;
-
-            this.api.get('/data').then(function (data) {
-                _this5.state.loading = false;
-                _this5.setState(_this5.state);
-                localStorage.setItem('data', JSON.stringify(data));
-                _electron.ipcRenderer.send('login');
-            }).catch(function (error) {
-                console.log(error);
-                _this5.state.loading = false;
-                _this5.state.disabled = false;
-                _this5.setState(_this5.state);
-                _message2.default.warning({
-                    content: '网络通讯错误',
-                    duration: 3000
-                });
-            });
-        }
-    }]);
-
-    return Login;
-}(_react2.default.Component);
-
-exports.default = Login;
-
-/***/ }),
-
-/***/ "./src/js/client/components/message.js":
-/*!*********************************************!*\
-  !*** ./src/js/client/components/message.js ***!
-  \*********************************************/
+/***/ "./src/js/client/components/common/message.js":
+/*!****************************************************!*\
+  !*** ./src/js/client/components/common/message.js ***!
+  \****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23243,6 +23040,209 @@ exports.default = Message;
 
 /***/ }),
 
+/***/ "./src/js/client/components/login/index.js":
+/*!*************************************************!*\
+  !*** ./src/js/client/components/login/index.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _message = __webpack_require__(/*! Components/common/message */ "./src/js/client/components/common/message.js");
+
+var _message2 = _interopRequireDefault(_message);
+
+var _api = __webpack_require__(/*! Lib/api */ "./src/js/client/lib/api.js");
+
+var _api2 = _interopRequireDefault(_api);
+
+var _electron = __webpack_require__(/*! electron */ "electron");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Login = function (_React$Component) {
+    _inherits(Login, _React$Component);
+
+    function Login(props) {
+        _classCallCheck(this, Login);
+
+        var _this = _possibleConstructorReturn(this, (Login.__proto__ || Object.getPrototypeOf(Login)).call(this, props));
+
+        _this.state = {
+            loading: false,
+            disabled: true,
+            showLayer: false,
+            layerText: ''
+        };
+        _this.api = new _api2.default();
+        return _this;
+    }
+
+    _createClass(Login, [{
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var type =  true ? '教师端' : undefined;
+            var label = this.state.loading ? '正在登陆' : '登陆';
+            return _react2.default.createElement(
+                'div',
+                { className: 'container-fluid login' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'text-center logo' },
+                    _react2.default.createElement('img', { src: '/images/logo.png' })
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'text-center name' },
+                    type
+                ),
+                _react2.default.createElement(
+                    'form',
+                    null,
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'form-group' },
+                        _react2.default.createElement(
+                            'label',
+                            null,
+                            '\u8D26\u53F7'
+                        ),
+                        _react2.default.createElement('input', { ref: function ref(username) {
+                                _this2.username = username;
+                            }, type: 'text', className: 'form-control', placeholder: '\u7528\u6237\u540D/\u624B\u673A\u53F7\u7801' })
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'form-group' },
+                        _react2.default.createElement(
+                            'label',
+                            null,
+                            '\u5BC6\u7801'
+                        ),
+                        _react2.default.createElement('input', { ref: function ref(password) {
+                                _this2.password = password;
+                            }, type: 'password', className: 'form-control', placeholder: '\u767B\u5F55\u5BC6\u7801' })
+                    ),
+                    _react2.default.createElement(
+                        'button',
+                        { type: 'button', className: 'btn btn-primary btn-block', disabled: this.state.disabled, onClick: this.doLogin.bind(this) },
+                        label
+                    )
+                )
+            );
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this3 = this;
+
+            this.username.oninput = function () {
+                return _this3.checkInput();
+            };
+            this.password.oninput = function () {
+                return _this3.checkInput();
+            };
+        }
+    }, {
+        key: 'checkInput',
+        value: function checkInput() {
+            var disabled = true;
+            if (this.username.value != '' && this.password.value != '') {
+                disabled = false;
+            }
+            this.setState({
+                disabled: disabled
+            });
+        }
+    }, {
+        key: 'doLogin',
+        value: function doLogin() {
+            var _this4 = this;
+
+            this.state.loading = true;
+            this.state.disabled = true;
+            this.setState(this.state);
+
+            var data = {
+                name: this.username.value,
+                password: this.password.value
+            };
+
+            this.api.post('/login', data).then(function (data) {
+                if (data.status) {
+                    localStorage.setItem('auth_token', data.token);
+                    localStorage.setItem('uid', data.uid);
+                    _this4.getData();
+                } else {
+                    _message2.default.error({
+                        content: data.error,
+                        duration: 3000
+                    });
+                    _this4.state.loading = false;
+                    _this4.state.disabled = false;
+                    _this4.setState(_this4.state);
+                }
+            }).catch(function (error) {
+                console.log(error);
+                _this4.state.loading = false;
+                _this4.state.disabled = false;
+                _this4.setState(_this4.state);
+                _message2.default.warning({
+                    content: '网络通讯错误',
+                    duration: 3000
+                });
+            });
+        }
+    }, {
+        key: 'getData',
+        value: function getData() {
+            var _this5 = this;
+
+            this.api.get('/data').then(function (data) {
+                _this5.state.loading = false;
+                _this5.setState(_this5.state);
+                localStorage.setItem('data', JSON.stringify(data));
+                _electron.ipcRenderer.send('login');
+            }).catch(function (error) {
+                console.log(error);
+                _this5.state.loading = false;
+                _this5.state.disabled = false;
+                _this5.setState(_this5.state);
+                _message2.default.warning({
+                    content: '网络通讯错误',
+                    duration: 3000
+                });
+            });
+        }
+    }]);
+
+    return Login;
+}(_react2.default.Component);
+
+exports.default = Login;
+
+/***/ }),
+
 /***/ "./src/js/client/lib/api.js":
 /*!**********************************!*\
   !*** ./src/js/client/lib/api.js ***!
@@ -23334,7 +23334,7 @@ var _reactDom = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/i
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _login = __webpack_require__(/*! ./components/login */ "./src/js/client/components/login.js");
+var _login = __webpack_require__(/*! Components/login */ "./src/js/client/components/login/index.js");
 
 var _login2 = _interopRequireDefault(_login);
 

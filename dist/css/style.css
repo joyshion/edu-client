@@ -8659,7 +8659,7 @@ html, body {
 body {
   -webkit-app-region: drag; }
 
-input, button {
+a, input, button {
   -webkit-app-region: no-drag; }
 
 #root {
@@ -8700,15 +8700,17 @@ input::selection {
     border-radius: 4px;
     background: #fff;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); }
-  .message .message_info .material-icons {
+  .message .message_success .material-icons {
     color: #42bd00; }
+  .message .message_info .material-icons {
+    color: #8FDE64; }
   .message .message_warning .material-icons {
     color: #faad14; }
   .message .message_error .material-icons {
     color: #C9002B; }
 
 .login .logo {
-  padding: 20px 0 20px 0; }
+  padding: 60px 0 20px 0; }
   .login .logo img {
     width: 120px; }
 
@@ -8729,7 +8731,8 @@ input::selection {
     background: #00c0ef;
     color: rgba(255, 255, 255, 0.9); }
     .dashboard .left .face {
-      margin-top: 40px; }
+      margin-top: 40px;
+      -webkit-app-region: no-drag; }
       .dashboard .left .face img {
         width: 60px;
         height: 60px;
@@ -8820,7 +8823,8 @@ input::selection {
     .dashboard .right .news {
       flex-grow: 1;
       background: #fff;
-      padding-bottom: 20px; }
+      padding-bottom: 20px;
+      -webkit-app-region: no-drag; }
       .dashboard .right .news .title {
         font-size: 14px;
         font-weight: 400;
@@ -8842,7 +8846,8 @@ input::selection {
               text-decoration: none; }
     .dashboard .right .content {
       flex-grow: 1;
-      background: #fff; }
+      background: #fff;
+      -webkit-app-region: no-drag; }
       .dashboard .right .content .title {
         font-size: 16px;
         font-weight: 400;
@@ -8871,6 +8876,11 @@ input::selection {
       .dashboard .right .content .table-responsive {
         overflow-y: scroll;
         height: 480px; }
+        .dashboard .right .content .table-responsive::-webkit-scrollbar {
+          width: 4px;
+          background: #fff; }
+        .dashboard .right .content .table-responsive::-webkit-scrollbar-thumb {
+          background: #f5f5f5; }
 
 .classroom {
   padding: 0;

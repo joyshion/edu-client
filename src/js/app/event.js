@@ -14,6 +14,7 @@ export default class EventListener {
     }
     
     login(event, args) {
+        this.app.isLogin = true;
         this.windownsManager.open('dashboard');
         this.windownsManager.close('login');
     }

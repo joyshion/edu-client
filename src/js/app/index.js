@@ -77,7 +77,7 @@ export default class App {
 
     // 注册业务事件处理
     registerEventListener(listenner) {
-        this.eventListener = new listenner(this.app, this.windownsManager);
+        this.eventListener = new listenner(this, this.windownsManager);
         return this;
     }
 
@@ -90,7 +90,6 @@ export default class App {
     registerStreamProtocol() {
         this.protocol.registerStreamProtocol(config.schemes, (request, callback) => {
             let filepath = this.getRequestFilePath(request);
-            console.log(filepath);
             let data = fs.createReadStream(filepath);
             let mime = this.getMimeType(filepath);
             callback({

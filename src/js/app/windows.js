@@ -14,7 +14,7 @@ export default class Windows {
         this.windows = [],
         // 默认窗口配置
         this.default_options = {
-            icon: this.app.app.getAppPath() + '/images/' + process.env.BUILD_TYPE + '.ico',
+            show: false,
             titleBarStyle: 'hidden',
             title: config.name + '_' + process.env.BUILD_TYPE == 'student' ? '学生端' : '教师端',
         };
@@ -41,13 +41,15 @@ export default class Windows {
             });
         }
         let url = this.config.schemes + '://' + this.config.base_url + '/' + config.url;
-        console.log(url);
         win.loadURL(url);
         this.windows.push({name: name, window: win});
 
         // 窗口将要显示
         win.once('ready-to-show', event => {
             win.show();
+        });
+        // 窗口已经显示
+        win.once('show', event => {
             if (config.onShow) {
                 config.onShow(win, event);
             }
@@ -92,9 +94,23 @@ export default class Windows {
      */
     activate() {
         if (this.app.isLogin) {
-            this.open('dashboard');
+            let index = this.windows.findIndex(n => {
+                return n.name == 'dashboard';
+            });
+            if (index >= 0) {
+                this.windows[index].window.show();
+            } else {
+                this.open('dashboard');
+            }
         } else {
-            this.open('login');
+            let index = this.windows.findIndex(n => {
+                return n.name == 'login';
+            });
+            if (index >= 0) {
+                this.windows[index].window.show();
+            } else {
+                this.open('login');
+            }
         }
     }
 }

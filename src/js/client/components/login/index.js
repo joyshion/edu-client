@@ -1,5 +1,5 @@
 import React from 'react'
-import Message from 'Components/message';
+import Message from 'Components/common/message';
 import API from 'Lib/api'
 import {ipcRenderer} from 'electron'
 

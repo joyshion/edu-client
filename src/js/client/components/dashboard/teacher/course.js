@@ -14,7 +14,7 @@ export default class Course extends React.Component {
             <div className="right d-flex flex-column">
                 <div className="content">
                     <div className="title">课程管理</div>
-                    <table class="table table-hover">
+                    <table className="table table-hover">
                         <thead>
                             <tr>
                                 <th scope="col">课程名称</th>
@@ -26,9 +26,9 @@ export default class Course extends React.Component {
                         </thead>
                         <tbody>
                             {this.state.data ? 
-                                this.state.data.course.map(n => {
+                                this.state.data.course.map((n, i) => {
                                     return (
-                                        <tr>
+                                        <tr key={i}>
                                             <td>{n.name}</td>
                                             <td>{n.lessons} 节</td>
                                             <td>&yen; {n.price}</td>

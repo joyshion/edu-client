@@ -5,6 +5,7 @@ import Student from './student'
 import Course from './course'
 import Setting from '../setting'
 import Profile from './profile'
+import ClassRoom from './classroom'
 import {ipcRenderer} from 'electron'
 
 export default class Dashboard extends React.Component {
@@ -14,8 +15,16 @@ export default class Dashboard extends React.Component {
             data: null
         };
     }
+    getPhoto() {
+        let photo = null;
+        if (this.state.data && (this.state.data.profile.photo != '')) {
+            return 'https://edu.xuancai365.com/' + this.state.data.profile.photo;
+        } else {
+            return 'images/face.jpg';
+        }
+    }
     render() {
-        let photo = this.state.data ? 'http://edu.com/' + this.state.data.profile.photo : '';
+        let photo = this.getPhoto();
         let name = this.state.data ? this.state.data.profile.name : '';
 
         return (<Router>
@@ -37,6 +46,9 @@ export default class Dashboard extends React.Component {
                                 <NavLink to="/course" activeClassName="active">课程管理</NavLink>
                             </li>
                             <li>
+                                <NavLink to="/classroom" activeClassName="active">我的课堂</NavLink>
+                            </li>
+                            <li>
                                 <NavLink to="/profile" activeClassName="active">账号设置</NavLink>
                             </li>
                             <li>
@@ -53,6 +65,7 @@ export default class Dashboard extends React.Component {
                 <Route path="/course" component={Course} />
                 <Route path="/profile" component={Profile} />
                 <Route path="/setting" component={Setting} />
+                <Route path="/classroom" component={ClassRoom} />
             </div>
         </Router>)
     }
