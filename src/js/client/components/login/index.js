@@ -17,9 +17,10 @@ export default class Login extends React.Component {
     render() {
         let type = process.env.BUILD_TYPE == 'teacher' ? '教师端' : '学生端';
         let label = this.state.loading ? '正在登陆' : '登陆';
+        let top = process.platform == 'win32' ? '30px' : '60px';
         return (
             <div className="container-fluid login">
-                <div className="text-center logo">
+                <div className="text-center logo" style={{paddingTop: top}}>
                     <img src="/images/logo.png"/>
                 </div>
                 <div className="text-center name">{type}</div>

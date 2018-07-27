@@ -30,6 +30,12 @@ export default class ClassRoom extends React.Component {
                                 this.state.data.history.map((n, i) => {
                                     return (
                                         <tr key={i}>
+                                            <td>{n.course_name}</td>
+                                            <td>{n.student_name}</td>
+                                            <td>{n.start_time}</td>
+                                            <td>{n.end_time}</td>
+                                            <td>{n.times}</td>
+                                            <td>{n.student_name}</td>
                                         </tr>
                                     );
                                 })
